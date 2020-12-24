@@ -4,7 +4,7 @@ set -x
 [[ -z "$TEST_GROUP" ]] && { echo "TEST_GROUP is undefined, exiting" ; exit 1; }
 
 ## Since we're running MiniKube with --vm-driver none, change imagePullPolicy to get the image locally
-#sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' test/operator.yaml
+sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' test/operator.yaml
 ## remove this once #947 is fixed
 export VERBOSE='-v -timeout 20m'
 if [ "${TEST_GROUP}" = "es" ]; then
@@ -33,7 +33,8 @@ then
     make prepare-e2e-tests
     docker images
     export DEBUG_MODE=true
-    make --keep-going e2e-tests-smoke e2e-kubectl-list
+    export SAVE_LOGS=true
+    make e2e-tests-smoke
 elif [ "${TEST_GROUP}" = "cassandra" ]
 then
     echo "Running Cassandra Tests"
