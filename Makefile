@@ -104,6 +104,7 @@ e2e-tests: prepare-e2e-tests e2e-tests-smoke e2e-tests-cassandra e2e-tests-es e2
 
 .PHONY: prepare-e2e-tests
 prepare-e2e-tests: build docker push
+	@echo Build image is ${BUILD_IMAGE}
 	@mkdir -p deploy/test
 	@cp deploy/service_account.yaml deploy/test/namespace-manifests.yaml
 	@echo "---" >> deploy/test/namespace-manifests.yaml

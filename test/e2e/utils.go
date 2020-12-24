@@ -326,6 +326,10 @@ func writePodLogsToFile(namespace, labelSelector, logFileNameBase string) {
 		logString := logs[logFileName]
 		log := []byte(logString)
 
+		fmt.Printf(">>>>>>>>>>>>>>>>>>>>>>> Log for %s <<<<<<<<<<<<<<<<<<<<<<<<", logFileName)
+		fmt.Printf("%s\n", logString)
+		fmt.Printf("===========================================================")
+
 		err := ioutil.WriteFile(logFileName, log, 0644)
 		if err != nil {
 			logrus.Warnf("Error writing log content to file %s: %v\n", logFileName, err)

@@ -32,7 +32,8 @@ then
     echo "Running Smoke Tests"
     make prepare-e2e-tests
     docker images
-    make e2e-tests-smoke
+    export DEBUG_MODE=true
+    make --keep-going e2e-tests-smoke e2e-kubectl-list
 elif [ "${TEST_GROUP}" = "cassandra" ]
 then
     echo "Running Cassandra Tests"
