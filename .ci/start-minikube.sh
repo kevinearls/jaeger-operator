@@ -34,6 +34,7 @@ MINIKUBE=$(which minikube) # it's outside of the regular PATH, so, need the full
 #minikube config set vm-driver none
 
 minikube version
+kubectl version
 #sudo ${MINIKUBE} start --kubernetes-version=$KUBERNETES_VERSION --extra-config=apiserver.authorization-mode=RBAC
 #sudo chown -R $USER $HOME/.kube $HOME/.minikube
 
@@ -48,7 +49,8 @@ for POD in ${COREDNSPODS}
 do
     kubectl wait --for=condition=Ready pod/${POD}  --namespace kube-system --timeout=60s
 done
-minikube addons list
+
 minikube addons enable ingress
+minikube addons list
 
 eval $(minikube docker-env)

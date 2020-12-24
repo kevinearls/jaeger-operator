@@ -4,11 +4,13 @@ set -x
 [[ -z "$TEST_GROUP" ]] && { echo "TEST_GROUP is undefined, exiting" ; exit 1; }
 
 ## Since we're running MiniKube with --vm-driver none, change imagePullPolicy to get the image locally
-sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' test/operator.yaml
+#sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' test/operator.yaml
 ## remove this once #947 is fixed
 export VERBOSE='-v -timeout 20m'
 if [ "${TEST_GROUP}" = "es" ]; then
     echo "Running elasticsearch tests"
+    make prepare-e2e-tests
+    docker images
     make es
     make e2e-tests-es
 elif [ "${TEST_GROUP}" = "es-otel" ]; then
@@ -28,6 +30,8 @@ elif [ "${TEST_GROUP}" = "es-self-provisioned" ]; then
 elif [ "${TEST_GROUP}" = "smoke" ]
 then
     echo "Running Smoke Tests"
+    make prepare-e2e-tests
+    docker images
     make e2e-tests-smoke
 elif [ "${TEST_GROUP}" = "cassandra" ]
 then
