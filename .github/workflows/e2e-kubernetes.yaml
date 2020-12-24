@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   end-to-end:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         TEST_GROUP: [smoke, es, cassandra, streaming, examples1, examples2, generate, es-otel, streaming-otel, smoke-otel, upgrade]
@@ -11,17 +11,24 @@ jobs:
     - uses: actions/setup-go@v1
       with:
         go-version: '1.14.4'
-    - uses: jpkrohling/setup-minikube@v1.0.2
-      with:
-        minikube-version: v1.5.2
-    - uses: jpkrohling/setup-kubectl@v1.0.2
+    - name: Setup Minikube
+        uses: manusa/actions-setup-minikube@v2.1.0
+        with:
+          minikube version: 'v1.15.1'
+          kubernetes version: 'v1.19.2'
+          driver: docker
+          github token: ${{ secrets.GITHUB_TOKEN }}
+
+    #- uses: jpkrohling/setup-kubectl@v1.0.2
+
     - uses: jpkrohling/setup-operator-sdk@v1.0.2
       with:
         operator-sdk-version: v0.18.2
+
     - uses: actions/checkout@v1
 
-    - name: "setup docker"
-      run: ./.ci/setup-docker.sh
+    #- name: "setup docker"
+    #  run: ./.ci/setup-docker.sh
 
     - name: "start minikube"
       run: ./.ci/start-minikube.sh
